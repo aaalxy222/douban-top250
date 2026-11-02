@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>豆瓣 Top250 数据看板 · douban-top250</title>
+  <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+<div class="page">
+  <header class="hero">
+    <h1>豆瓣 Top250 数据看板</h1>
+    <p>Python 采集 10 页榜单 → 解析入库 → SQLite 按排名增量更新，支持关键词检索、评分筛选、排序与 CSV 导出。</p>
+  </header>
+
+  <section class="stats">
+    <div class="stat"><span class="stat-num" id="statTotal">0</span><span class="stat-label">总片数</span></div>
+    <div class="stat"><span class="stat-num" id="statRating">--</span><span class="stat-label">平均评分</span></div>
+    <div class="stat"><span class="stat-num" id="statDecade">0</span><span class="stat-label">覆盖年代</span></div>
+    <div class="stat">
+      <span class="stat-num" id="statVotes">--</span>
+      <span class="stat-label" id="statVotesLabel">评价人数最多的影片</span>
+    </div>
+  </section>
+
+  <div class="panels">
+    <section class="panel">
+      <h2>年代分布</h2>
+      <div class="bars" id="decadeBars"></div>
+    </section>
+    <section class="panel">
+      <h2>国家 / 地区分布（前 8）</h2>
+      <div class="bars" id="countryBars"></div>
+    </section>
+  </div>
+
+  <section class="panel list-panel">
+    <div class="toolbar">
+      <input id="keyword" type="search" placeholder="搜索片名 / 短评 / 类型">
+      <select id="minRating">
+        <option value="">全部评分</option>
+        <option value="9">9.0 分以上</option>
+        <option value="8.5">8.5 分以上</option>
+        <option value="8">8.0 分以上</option>
+      </select>
+      <select id="sort">
+        <option value="rank">按排名</option>
+        <option value="rating">按评分</option>
+        <option value="votes">按评价人数</option>
+        <option value="year">按年份</option>
+      </select>
+      <button id="exportBtn" class="btn primary">导出 CSV</button>
+    </div>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th class="c-rank">排名</th>
+            <th class="c-title">片名</th>
+            <th class="c-rating">评分</th>
+            <th class="c-votes">评价人数</th>
+            <th class="c-year">年份</th>
+            <th class="c-country">国家</th>
+            <th class="c-genre">类型</th>
+            <th class="c-quote">一句话短评</th>
+          </tr>
+        </thead>
+        <tbody id="tbody"></tbody>
+      </table>
+    </div>
+
+    <div class="pager">
+      <button id="prevBtn" class="btn ghost">上一页</button>
+      <span id="pageInfo" class="page-info">加载中…</span>
+      <button id="nextBtn" class="btn ghost">下一页</button>
+    </div>
+  </section>
+</div>
+<script src="/static/app.js"></script>
+</body>
+</html>
